@@ -1,0 +1,67 @@
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Webstorm files
+*.idea
+.idea
+.idea/
+
+#Mono (or something?) files
+*.pidb
+*.userprefs
+
+#Visual Studio files
+*.docstates
+*.[Oo]bj
+*.dat
+*.crc
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb 
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+ipch/
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+Ankh.NoLoad
+
+#Tooling
+_ReSharper*/
+*.[Rr]e[Ss]harper
+[Tt]est[Rr]esult*
+
+#Project files
+[Bb]uild/
+packages/
+
+#Subversion files
+.svn
+
+# Office Temp Files
+~$*
+
+#Rails Heroku and other bits to ignore
+*.log  
+*.sqlite3
+db/*.sqlite3
+.bundle
+log/*
+tmp/*
+public/system/*
