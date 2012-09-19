@@ -1,8 +1,7 @@
-﻿using Vcap_Client.Vcap;
+﻿using VcapClient.Vcap;
 
 namespace IronFoundry.Vcap
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Models;
@@ -68,7 +67,7 @@ namespace IronFoundry.Vcap
             var apps = new AppsHelper(ProxyUser, CredentialManager);
 
             Application app = apps.GetApplication(appName);
-            app.Services.Add(provisionedServiceName);
+            app.AddService(provisionedServiceName);
 
             var request = BuildVcapJsonRequest(Method.PUT, Constants.APPS_PATH, app.Name);
             request.AddBody(app);

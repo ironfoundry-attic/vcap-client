@@ -1,16 +1,10 @@
-﻿using System.Text;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-
-namespace IronFoundry.Models
+﻿namespace IronFoundry.Models
 {
     using System;
-    using System.Collections.Generic;
     using Newtonsoft.Json;
 
     [Serializable]
-    public class ProvisionedService : EntityBase, IMergeable<ProvisionedService>
+    public class ProvisionedService : EntityBase
     {        
         [JsonProperty(PropertyName = "name")]
         public string Name { get; private set; }
@@ -29,15 +23,6 @@ namespace IronFoundry.Models
 
         [JsonProperty(PropertyName = "version")]
         public string Version { get; private set; }
-
-        public void Merge(ProvisionedService obj)
-        {            
-            this.Type = obj.Type;
-            this.Tier = obj.Tier;
-            this.Vendor = obj.Vendor;
-            this.MetaData = obj.MetaData;
-            this.Version = obj.Version;
-        }
     }
 
     [Serializable]
@@ -54,18 +39,5 @@ namespace IronFoundry.Models
         
         [JsonProperty(PropertyName = "version")]
         public uint Version { get; set; }
-    }
-
-    public class ProvisionedServiceEqualityComparer : IEqualityComparer<ProvisionedService>
-    {
-        public bool Equals(ProvisionedService c1, ProvisionedService c2)
-        {
-            return c1.Name.Equals(c2.Name);
-        }
-
-        public int GetHashCode(ProvisionedService c)
-        {
-            return c.Name.GetHashCode();
-        }
     }
 }

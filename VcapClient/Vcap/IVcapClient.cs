@@ -18,7 +18,6 @@
         void Target(string uri, IPAddress ipAddress);
         string CurrentTarget { get; }
 
-        void Login();
         void Login(string email, string password);
         void ChangePassword(string newPassword);
         void AddUser(string email, string password);
