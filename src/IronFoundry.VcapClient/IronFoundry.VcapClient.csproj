@@ -14,20 +14,23 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
+    <FxCopToolPath>$(MSBuildProgramFiles32)\Microsoft FxCop 10.0\</FxCopToolPath>
+    <!-- TODO -->
   </PropertyGroup>
   <PropertyGroup>
     <Major>0</Major>
     <Minor>1</Minor>
     <Patch>2</Patch>
-    <Build>3</Build> <!-- TODO -->
+    <Build>3</Build>
+    <!-- TODO -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -36,7 +39,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -141,5 +144,29 @@
   <Target Name="BeforeBuild">
     <Message Text="Version: $(Major).$(Minor).$(Patch).$(Build)" />
     <AssemblyInfo CodeLanguage="CS" OutputFile="$(SolutionDir)\src\AssemblyFileInfo.cs" AssemblyFileVersion="$(Major).$(Minor).$(Patch).$(Build)" AssemblyConfiguration="$(Configuration)" Condition="$(Build) != ''" />
+  </Target>
+  <UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.FxCop" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <FxCopRuleAssemblies Include="DesignRules.dll" />
+      <FxCopRuleAssemblies Include="GlobalizationRules.dll" />
+      <FxCopRuleAssemblies Include="InteroperabilityRules.dll" />
+      <FxCopRuleAssemblies Include="MobilityRules.dll" />
+      <FxCopRuleAssemblies Include="NamingRules.dll" />
+      <FxCopRuleAssemblies Include="PerformanceRules.dll" />
+      <FxCopRuleAssemblies Include="PortabilityRules.dll" />
+      <FxCopRuleAssemblies Include="SecurityRules.dll" />
+      <FxCopRuleAssemblies Include="SecurityTransparencyRules.dll" />
+      <FxCopRuleAssemblies Include="UsageRules.dll" />
+      <FxCopTargetAssembly Include="@(MainAssembly)" />
+    </ItemGroup>
+    <FxCop ToolPath="$(FxCopToolPath)"
+      CustomDictionary="$(FxCopCustomDictionary)"
+      RuleLibraries="@(FxCopRuleAssemblies)"
+      TargetAssemblies="@(FxCopTargetAssembly)"
+      DependencyDirectories="@(ReferencePath)"
+      FailOnError="True"
+      ConsoleXslFileName="$(FxCopToolPath)\Xml\VSConsoleOutput.xsl"
+      DirectOutputToConsole="true" />
   </Target>
 </Project>
