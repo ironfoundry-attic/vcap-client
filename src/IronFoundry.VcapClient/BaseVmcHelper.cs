@@ -1,4 +1,10 @@
-﻿namespace IronFoundry.VcapClient
+// -----------------------------------------------------------------------
+// <copyright file="BaseVmcHelper.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace IronFoundry.VcapClient
 {
     using System;
     using System.Collections.Generic;

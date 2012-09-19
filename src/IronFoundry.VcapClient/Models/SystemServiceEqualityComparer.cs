@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------
+// <copyright file="SystemServiceEqualityComparer.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace IronFoundry.Models
 {
     using System.Collections.Generic;

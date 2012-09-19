@@ -1,4 +1,10 @@
-﻿namespace System
+// -----------------------------------------------------------------------
+// <copyright file="ExtensionMethods.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace System
 {
     internal static class StringExtensionMethods
     {

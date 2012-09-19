@@ -1,4 +1,10 @@
-﻿namespace IronFoundry.VcapClient
+// -----------------------------------------------------------------------
+// <copyright file="VcapRequest.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace IronFoundry.VcapClient
 {
     using System;
     using System.Collections;
@@ -12,6 +18,8 @@
 
     public abstract class VcapRequestBase
     {
+        protected RestRequest request;
+
         private static readonly ushort[] VmcHttpErrorCodes =
         {
             (ushort)HttpStatusCode.BadRequest,              // 400
@@ -31,7 +39,6 @@
         private readonly string proxyUserEmail;
 
         private string requestHostHeader;
-        protected RestRequest request;
 
         protected VcapRequestBase(string proxyUserEmail, VcapCredentialManager credentialManager)
         {

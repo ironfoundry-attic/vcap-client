@@ -1,4 +1,10 @@
-﻿namespace IronFoundry.Utilities
+// -----------------------------------------------------------------------
+// <copyright file="NewtonsoftJsonDeserializer.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace IronFoundry.Utilities
 {
     using Newtonsoft.Json;
     using RestSharp;

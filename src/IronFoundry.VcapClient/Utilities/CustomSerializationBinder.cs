@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------
+// <copyright file="CustomSerializationBinder.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;

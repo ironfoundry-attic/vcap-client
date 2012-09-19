@@ -1,4 +1,10 @@
-﻿namespace IronFoundry
+// -----------------------------------------------------------------------
+// <copyright file="Utilities.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace IronFoundry
 {
     using System.IO;
     using Microsoft.VisualBasic.Devices;

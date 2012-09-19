@@ -1,4 +1,10 @@
-﻿namespace IronFoundry.VcapClient
+// -----------------------------------------------------------------------
+// <copyright file="VcapCredentialManager.cs" company="Tier 3">
+// Copyright © 2012 Tier 3 Inc., All Rights Reserved
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace IronFoundry.VcapClient
 {
     using System;
     using System.Collections.Generic;
@@ -31,24 +37,6 @@
         private Uri currentTarget;
         private IPAddress currentTargetIP;
 
-        private VcapCredentialManager(string json)
-        {
-            string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            tokenFile = Path.Combine(userProfilePath, TokenFile);
-            targetFile = Path.Combine(userProfilePath, TargetFile);
-
-            if (json.IsNullOrWhiteSpace())
-            {
-                ParseJson(ReadTokenFile());
-            }
-            else
-            {
-                ParseJson(json);
-            }
-
-            currentTarget = ReadTargetFile();
-        }
-
         public VcapCredentialManager() : this((string)null)
         {
         }
@@ -73,6 +61,24 @@
                 throw new ArgumentNullException("currentTargetIP");
             }
             SetTarget(currentTarget, currentTargetIP);
+        }
+
+        private VcapCredentialManager(string json)
+        {
+            string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            tokenFile = Path.Combine(userProfilePath, TokenFile);
+            targetFile = Path.Combine(userProfilePath, TargetFile);
+
+            if (json.IsNullOrWhiteSpace())
+            {
+                ParseJson(ReadTokenFile());
+            }
+            else
+            {
+                ParseJson(json);
+            }
+
+            currentTarget = ReadTargetFile();
         }
 
         internal VcapCredentialManager(string tokenJson, bool shouldWrite) : this(tokenJson)
