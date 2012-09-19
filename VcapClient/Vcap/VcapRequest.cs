@@ -1,6 +1,4 @@
-﻿using Vcap_Client.Properties;
-
-namespace IronFoundry.Vcap
+﻿namespace IronFoundry.Vcap
 {
     using System;
     using System.Collections;
@@ -10,6 +8,7 @@ namespace IronFoundry.Vcap
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using RestSharp;
+    using Properties;
 
     public abstract class VcapRequestBase
     {

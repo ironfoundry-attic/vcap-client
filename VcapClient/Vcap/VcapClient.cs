@@ -1,20 +1,18 @@
-﻿using IronFoundry.Vcap;
-using Vcap_Client.Properties;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using IronFoundry.Extensions;
-using IronFoundry.Models;
-
-namespace Vcap_Client.Vcap
+﻿namespace VcapClient.Vcap
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using IronFoundry.Extensions;
+    using IronFoundry.Models;
+    using IronFoundry.Vcap;
+
     public class VcapClient : IVcapClient
     {
         private VcapCredentialManager credMgr;
-        private readonly Cloud cloud;
         private static readonly Regex FileRe;
         private static readonly Regex DirRe;
         private VcapUser proxyUser;
@@ -38,12 +36,6 @@ namespace Vcap_Client.Vcap
         public VcapClient(string uri)
         {
             Target(uri);
-        }
-
-        public VcapClient(Cloud cloud)
-        {
-            Target(cloud.Url);
-            this.cloud = cloud;
         }
 
         public VcapClient(Uri uri, IPAddress ipAddress)
@@ -102,11 +94,6 @@ namespace Vcap_Client.Vcap
         public string CurrentTarget
         {
             get { return credMgr.CurrentTarget.AbsoluteUriTrimmed(); }
-        }
-
-        public void Login()
-        {
-            Login(cloud.Email, cloud.Password);
         }
 
         public void Login(string email, string password)
@@ -247,7 +234,6 @@ namespace Vcap_Client.Vcap
         {
             var helper = new AppsHelper(proxyUser, credMgr);
             Application rv =  helper.GetApplication(name);
-            rv.Parent = cloud; // TODO not thrilled about this
             return rv;
         }
 
@@ -257,7 +243,6 @@ namespace Vcap_Client.Vcap
             IEnumerable<Application> apps = helper.GetApplications();
             foreach (var app in apps) // TODO not thrilled about this
             {
-                app.Parent = cloud;
                 app.User = proxyUser;
             } 
             return apps;

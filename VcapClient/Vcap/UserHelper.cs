@@ -1,14 +1,11 @@
-﻿using IronFoundry.Models;
-using IronFoundry.Vcap;
-using Vcap_Client.Vcap;
-
-// ReSharper disable CheckNamespace
-namespace Vcap_Client.Properties
-// ReSharper restore CheckNamespace
+﻿namespace VcapClient.Vcap
 {
     using System.Collections.Generic;
+    using IronFoundry.Models;
+    using IronFoundry.Vcap;
     using Newtonsoft.Json.Linq;
     using RestSharp;
+    using Properties;
 
     internal class UserHelper : BaseVmcHelper
     {

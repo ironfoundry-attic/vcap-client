@@ -1,24 +1,18 @@
-﻿using System.Text;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-
-namespace IronFoundry.Models
+﻿namespace IronFoundry.Models
 {
     using System;
     using System.Collections.Generic;
-    using Extensions;
     using Newtonsoft.Json;
 
     [Serializable]
-    public class Application : EntityBase, IMergeable<Application> 
+    public class Application : EntityBase
     {
         private static class VcapStates
         {
-            public const string Starting      = "Starting";
-            public const string Stopped       = "STOPPED";
-            public const string Running       = "RUNNING";
-            public const string Started       = "STARTED";
+            public const string Starting = "Starting";
+            public const string Stopped  = "STOPPED";
+            public const string Running  = "RUNNING";
+            public const string Started  = "STARTED";
         }
 
         private string name;
@@ -28,18 +22,10 @@ namespace IronFoundry.Models
         private int? runningInstances;
         private AppResources resources;
         private string state;
-        private readonly SafeObservableCollection<string> uris = new SafeObservableCollection<string>();
-        private readonly SafeObservableCollection<string> services = new SafeObservableCollection<string>();        
-        private readonly SafeObservableCollection<string> environment = new SafeObservableCollection<string>();
-        private readonly SafeObservableCollection<Instance> instanceCollection = new SafeObservableCollection<Instance>();
+        private List<string> services = new List<string>();
 
         public Application()
         {
-            uris.CollectionChanged += (s,e) => RaisePropertyChanged("Uris");
-            services.CollectionChanged += (s,e) => RaisePropertyChanged("Services");
-            environment.CollectionChanged += (s,e) => RaisePropertyChanged("Environment");
-            instanceCollection.CollectionChanged += (s,e) => RaisePropertyChanged("InstanceCollection");
-
             Staging = new Staging();
             Resources = new AppResources();
         }
@@ -48,77 +34,77 @@ namespace IronFoundry.Models
         public string Name
         {
             get { return this.name; }
-            set { this.name = value; RaisePropertyChanged("Name"); }
+            set { this.name = value; }
         }
 
         [JsonProperty(PropertyName = "staging")]
         public Staging Staging
         {
             get { return this.staging; }
-            set { this.staging = value; RaisePropertyChanged("Staging"); }
+            set { this.staging = value; }
         }
 
         [JsonProperty(PropertyName = "uris")]
-        public SafeObservableCollection<string> Uris
-        {
-            get { return this.uris; }
-        }
+        public string[] Uris { get; set; }
 
         [JsonProperty(PropertyName = "instances")]
-        public int Instances
+        public int InstanceCount
         {
             get { return this.instances; }
-            set { this.instances = value; RaisePropertyChanged("Instances"); }
+            set { this.instances = value; }
         }
 
         [JsonProperty(PropertyName = "runningInstances")]
         public int? RunningInstances
         {
             get { return this.runningInstances; }
-            set { this.runningInstances = value; RaisePropertyChanged("RunningInstances"); }
+            set { this.runningInstances = value; }
         }
 
         [JsonProperty(PropertyName = "resources")]
         public AppResources Resources
         {
             get { return this.resources; }
-            set { this.resources = value; RaisePropertyChanged("Resources"); }
+            set { this.resources = value; }
         }
 
         [JsonProperty(PropertyName = "state")]
         public string State
         {
             get { return this.state; }
-            set { this.state = value; RaisePropertyChanged("State"); }
+            set { this.state = value; }
         }
 
         [JsonProperty(PropertyName = "services")]
-        public SafeObservableCollection<string> Services 
+        public string[] Services
         {
-            get { return this.services; }
+            get { return services.ToArrayOrNull(); }
+            set
+            {
+                if (value == null)
+                {
+                    services.Clear();
+                }
+                else
+                {
+                    services.Clear();
+                    services.AddRange(value);
+                }
+            }
         }
 
         [JsonProperty(PropertyName = "version")]
         public string Version
         {
             get { return this.version; }
-            set { this.version = value; RaisePropertyChanged("Version"); }
+            set { this.version = value; }
         }
 
         [JsonProperty(PropertyName = "env")]
-        public SafeObservableCollection<string> Environment
-        {
-            get { return this.environment; }
-        }
+        public string[] Environment { get; set; }
 
         [JsonIgnore]
-        public SafeObservableCollection<Instance> InstanceCollection
-        {
-            get { return this.instanceCollection; }
-        }
-        
-        [JsonIgnore]
-        public Cloud Parent { get; set; }
+        public Instance[] Instances { get; set; }
 
         [JsonIgnore]
         public VcapUser User { get; set; }
@@ -153,18 +139,6 @@ namespace IronFoundry.Models
             }
         }
 
-        public void Merge(Application obj)
-        {
-            this.Staging          = obj.Staging;
-            this.Resources        = obj.Resources;
-            this.Version          = obj.Version;
-            this.Instances        = obj.Instances;
-            this.RunningInstances = obj.RunningInstances;
-            this.State            = obj.State;
-            this.Uris.Synchronize(obj.Uris,StringComparer.InvariantCulture);
-            this.InstanceCollection.Synchronize(obj.InstanceCollection,new InstanceEqualityComparer());
-        }
-
         public void Start()
         {
             this.State = VcapStates.Started;
@@ -173,6 +147,11 @@ namespace IronFoundry.Models
         public void Stop()
         {
             this.State = VcapStates.Stopped;
+        }
+
+        public void AddService(string provisionedServiceName)
+        {
+            services.Add(provisionedServiceName);
         }
     }
 
@@ -186,14 +165,14 @@ namespace IronFoundry.Models
         public string Model
         {
             get { return this.model; }
-            set { this.model = value; RaisePropertyChanged("Model"); }
+            set { this.model = value; }
         }
 
         [JsonProperty(PropertyName = "stack")]
         public string Stack
         {
             get { return this.stack; }
-            set { this.stack = value; RaisePropertyChanged("Stack"); }
+            set { this.stack = value; }
         }
     }
 
@@ -208,34 +187,21 @@ namespace IronFoundry.Models
         public int Memory
         {
             get { return this.memory; }
-            set { this.memory = value; RaisePropertyChanged("Memory"); }
+            set { this.memory = value; }
         }
 
         [JsonProperty(PropertyName = "disk")]
         public int Disk
         {
             get { return this.disk; }
-            set { this.disk = value; RaisePropertyChanged("Disk"); }
+            set { this.disk = value; }
         }
 
         [JsonProperty(PropertyName = "fds")]
         public int Fds
         {
             get { return this.fds; }
-            set { this.fds = value; RaisePropertyChanged("Fds"); }
+            set { this.fds = value; }
         }
     }   
-
-    public class ApplicationEqualityComparer : IEqualityComparer<Application>
-    {
-        public bool Equals(Application c1, Application c2)
-        {
-            return c1.Name.Equals(c2.Name);
-        }
-
-        public int GetHashCode(Application c)
-        {
-            return c.Name.GetHashCode();
-        }
-    }
 }

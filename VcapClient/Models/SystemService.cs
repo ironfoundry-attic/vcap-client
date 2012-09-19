@@ -1,16 +1,10 @@
-﻿using System.Text;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-
-namespace IronFoundry.Models
+﻿namespace IronFoundry.Models
 {
     using System;
     using Newtonsoft.Json;
-    using System.Collections.Generic;
 
     [Serializable]
-    public class SystemService : EntityBase, IMergeable<SystemService>
+    public class SystemService : EntityBase
     {
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; } 
@@ -26,13 +20,5 @@ namespace IronFoundry.Models
 
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
-
-        public void Merge(SystemService obj)
-        {
-            this.Type = obj.Type;
-            this.Version = obj.Version;
-            this.Id = obj.Id;
-            this.Description = obj.Description;
-        }
     }
 }

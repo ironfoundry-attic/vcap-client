@@ -1,16 +1,10 @@
-﻿using System.Text;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-
-namespace IronFoundry.Models
+﻿namespace IronFoundry.Models
 {
     using System;
-    using System.ComponentModel;
     using Newtonsoft.Json;
 
     [Serializable]
-    public abstract class EntityBase : INotifyPropertyChanged
+    public abstract class EntityBase
     {
         public string ToJson()
         {
@@ -34,14 +28,5 @@ namespace IronFoundry.Models
 
             return rv;
         }        
-
-        [field: NonSerialized, JsonIgnore]
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

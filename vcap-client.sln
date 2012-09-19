@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{81862D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vcap-Client", "Vcap-Client\Vcap-Client.csproj", "{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcapClient", "VcapClient\VcapClient.csproj", "{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

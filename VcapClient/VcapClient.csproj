@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vcap_Client</RootNamespace>
-    <AssemblyName>Vcap-Client</AssemblyName>
+    <AssemblyName>VcapClient</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -56,35 +58,26 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="Extensions\ObjectExtensionMethods.cs" />
-    <Compile Include="Extensions\SafeObservableCollection.cs" />
     <Compile Include="Extensions\UriExtensionMethods.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\AppServer.cs" />
-    <Compile Include="Models\Cloud.cs" />
-    <Compile Include="Models\CloudUrl.cs" />
     <Compile Include="Models\Crash.cs" />
     <Compile Include="Models\EntityBase.cs" />
     <Compile Include="Models\ExternalInstance.cs" />
     <Compile Include="Models\Framework.cs" />
-    <Compile Include="Models\IMergeable.cs" />
     <Compile Include="Models\Info.cs" />
     <Compile Include="Models\InfoLimits.cs" />
     <Compile Include="Models\InfoUsage.cs" />
     <Compile Include="Models\Instance.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\Preferences.cs" />
-    <Compile Include="Models\PreferencesV2.cs" />
     <Compile Include="Models\ProvisionedService.cs" />
     <Compile Include="Models\Runtime.cs" />
     <Compile Include="Models\StatInfo.cs" />

@@ -10,11 +10,11 @@ using ICSharpCode.SharpZipLib.Zip;
 using IronFoundry;
 using Newtonsoft.Json;
 using RestSharp;
-using Vcap_Client.Properties;
+using VcapClient.Properties;
 using AppResources = IronFoundry.Vcap.AppResources;
 using Staging = IronFoundry.Vcap.Staging;
 
-namespace Vcap_Client.Vcap
+namespace VcapClient.Vcap
 {
     internal class AppsHelper : BaseVmcHelper
     {
