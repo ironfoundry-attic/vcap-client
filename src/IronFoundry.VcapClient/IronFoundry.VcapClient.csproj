@@ -55,15 +55,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RestSharp.dll</HintPath>
+      <HintPath>..\..\lib\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -160,13 +161,6 @@
       <FxCopRuleAssemblies Include="UsageRules.dll" />
       <FxCopTargetAssembly Include="@(MainAssembly)" />
     </ItemGroup>
-    <FxCop ToolPath="$(FxCopToolPath)"
-      CustomDictionary="$(FxCopCustomDictionary)"
-      RuleLibraries="@(FxCopRuleAssemblies)"
-      TargetAssemblies="@(FxCopTargetAssembly)"
-      DependencyDirectories="@(ReferencePath)"
-      FailOnError="True"
-      ConsoleXslFileName="$(FxCopToolPath)\Xml\VSConsoleOutput.xsl"
-      DirectOutputToConsole="true" />
+    <FxCop ToolPath="$(FxCopToolPath)" CustomDictionary="$(FxCopCustomDictionary)" RuleLibraries="@(FxCopRuleAssemblies)" TargetAssemblies="@(FxCopTargetAssembly)" DependencyDirectories="@(ReferencePath)" FailOnError="True" ConsoleXslFileName="$(FxCopToolPath)\Xml\VSConsoleOutput.xsl" DirectOutputToConsole="true" />
   </Target>
 </Project>
