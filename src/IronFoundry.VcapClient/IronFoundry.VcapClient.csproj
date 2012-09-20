@@ -148,7 +148,7 @@
     <AssemblyInfo CodeLanguage="CS" OutputFile="$(SolutionDir)\src\AssemblyFileInfo.cs" AssemblyFileVersion="$(Major).$(Minor).$(Patch).$(Build)" AssemblyConfiguration="$(Configuration)" Condition="$(Build) != ''" />
   </Target>
   <UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.FxCop" />
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuild" Condition="Exists('$(FxCopToolPath)')">
     <ItemGroup>
       <FxCopRuleAssemblies Include="DesignRules.dll" />
       <FxCopRuleAssemblies Include="GlobalizationRules.dll" />
