@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{81862D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient", "src\IronFoundry.VcapClient\IronFoundry.VcapClient.csproj", "{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.Test", "src\IronFoundry.VcapClient.Test\IronFoundry.VcapClient.Test.csproj", "{3B317729-A8EC-4EC4-A1BB-28E0E47BB916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F88EE4D-4854-4B25-9658-42DFBE12BBEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B317729-A8EC-4EC4-A1BB-28E0E47BB916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B317729-A8EC-4EC4-A1BB-28E0E47BB916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B317729-A8EC-4EC4-A1BB-28E0E47BB916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B317729-A8EC-4EC4-A1BB-28E0E47BB916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
