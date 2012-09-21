@@ -16,7 +16,6 @@
     <RestorePackages>true</RestorePackages>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <FxCopToolPath>$(MSBuildProgramFiles32)\Microsoft FxCop 10.0\</FxCopToolPath>
-    <!-- TODO -->
   </PropertyGroup>
   <PropertyGroup>
     <Major>0</Major>
