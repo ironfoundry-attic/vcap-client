@@ -1,3 +1,3 @@
 The C# / .NET VCAP Client
 ===
-[Continuous Integration Status](http://www.ironfoundry.org/ci)
+[Continuous Integration Status](http://ci.ironfoundry.org)
