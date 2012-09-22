@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IronFoundry.VcapClient.Test")]
+[assembly: AssemblyTitle("IronFoundry.VcapClient.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("IronFoundry.VcapClient.Test")]
+[assembly: AssemblyProduct("IronFoundry.VcapClient.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b8a99936-fbea-475b-bdd6-004eae2e0c4a")]
+[assembly: Guid("a61d3ab4-e10a-4e7a-aa4a-85f820b91bda")]
 
 // Version information for an assembly consists of the following four values:
 //
