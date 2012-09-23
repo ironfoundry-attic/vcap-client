@@ -3,12 +3,12 @@
 namespace IronFoundry.VcapClient.Tests
 {
     [TestFixture]
-    public class FirstTests 
+    public class FirstTests
     {
         [Test]
         public void Test()
         {
-            Assert.AreEqual( true, true );
+            Assert.AreEqual(true, true);
         }
     }
 }
