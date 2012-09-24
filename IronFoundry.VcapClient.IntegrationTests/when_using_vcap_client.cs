@@ -1,4 +1,4 @@
-namespace IronFoundry.VcapClient.Tests
+namespace IronFoundry.VcapClient.IntegrationTests
 {
     using System;
     using FluentAssertions;
