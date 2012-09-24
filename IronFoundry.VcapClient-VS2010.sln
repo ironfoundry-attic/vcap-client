@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.Tests", "src\IronFoundry.VcapClient.Tests\IronFoundry.VcapClient.Tests.csproj", "{456633D6-BF33-42F9-8493-86024BB6C3F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.IntegrationTests", "IronFoundry.VcapClient.IntegrationTests\IronFoundry.VcapClient.IntegrationTests.csproj", "{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{456633D6-BF33-42F9-8493-86024BB6C3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{456633D6-BF33-42F9-8493-86024BB6C3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{456633D6-BF33-42F9-8493-86024BB6C3F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
