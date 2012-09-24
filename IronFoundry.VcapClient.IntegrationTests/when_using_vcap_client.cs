@@ -30,5 +30,15 @@ namespace IronFoundry.VcapClient.IntegrationTests
             var cloudInfo = cloudActive.GetUser(Username);
             cloudInfo.Admin.Should().BeFalse();
         }
+
+        [Test]
+        public void should_have_correct_target_uri()
+        {
+            var cloudActive = new VcapClient(GoodUri.ToString());
+            cloudActive.Login(Username, Password);
+            cloudActive.Target(GoodUri.ToString());
+            var designatedUri = new Uri(cloudActive.CurrentUri);
+            designatedUri.Should().Be(GoodUri.ToString());
+        }
     }
 }
