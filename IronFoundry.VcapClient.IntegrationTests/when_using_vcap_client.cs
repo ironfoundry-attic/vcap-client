@@ -1,9 +1,9 @@
-using System;
-using FluentAssertions;
-using NUnit.Framework;
-
 namespace IronFoundry.VcapClient.IntegrationTests
 {
+    using System;
+    using FluentAssertions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class when_using_vcap_client
     {
