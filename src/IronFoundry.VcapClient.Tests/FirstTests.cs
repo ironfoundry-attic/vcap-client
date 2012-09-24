@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-
-namespace IronFoundry.VcapClient.Tests
+﻿namespace IronFoundry.VcapClient.Tests
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class FirstTests
     {

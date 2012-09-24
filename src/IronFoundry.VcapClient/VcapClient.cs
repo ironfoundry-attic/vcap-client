@@ -3,18 +3,17 @@
 // Copyright © 2012 Tier 3 Inc., All Rights Reserved
 // </copyright>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using IronFoundry.Extensions;
-using IronFoundry.Models;
-
 namespace IronFoundry.VcapClient
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using IronFoundry.Extensions;
+    using IronFoundry.Models;
+
     public class VcapClient : IVcapClient
     {
         private static readonly Regex FileRe;

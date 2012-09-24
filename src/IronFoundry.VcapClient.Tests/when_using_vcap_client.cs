@@ -1,9 +1,9 @@
-using System;
-using FluentAssertions;
-using NUnit.Framework;
-
 namespace IronFoundry.VcapClient.Tests
 {
+    using System;
+    using FluentAssertions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class when_using_vcap_client
     {
@@ -20,7 +20,5 @@ namespace IronFoundry.VcapClient.Tests
             var cloudInfo = cloudActive.GetInfo();
             cloudInfo.Name.Should().NotBeNull();
         }
-
-
     }
 }
