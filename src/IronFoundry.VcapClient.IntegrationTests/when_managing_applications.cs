@@ -23,11 +23,7 @@ namespace IronFoundry.VcapClient.IntegrationTests
 
         [TestFixtureTearDown]
         public void cleaning_up_the_testing()
-        {
-            var testApplication = CloudActive.GetApplication(TestApplicationName);
-            if(testApplication != null && testApplication.IsStarted || testApplication.IsStopped)
-                CloudActive.Delete(testApplication);
-        }
+        {        }
 
         [Test]
         public void should_detect_known_apps()
