@@ -25,7 +25,14 @@ namespace IronFoundry.VcapClient.IntegrationTests
 
         [TestFixtureTearDown]
         public void cleaning_up_the_testing()
-        { }
+        {
+            var apps = cloudActive.GetApplications();
+          
+            foreach (var application in apps)
+            {
+                cloudActive.Delete(application.Name);
+            }
+        }
 
         [Test]
         public void should_detect_known_apps()
