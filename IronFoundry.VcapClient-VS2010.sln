@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.Tests", "src\IronFoundry.VcapClient.Tests\IronFoundry.VcapClient.Tests.csproj", "{456633D6-BF33-42F9-8493-86024BB6C3F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.IntegrationTests", "IronFoundry.VcapClient.IntegrationTests\IronFoundry.VcapClient.IntegrationTests.csproj", "{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFoundry.VcapClient.IntegrationTests", "src\IronFoundry.VcapClient.IntegrationTests\IronFoundry.VcapClient.IntegrationTests.csproj", "{4C6943A3-3F4C-414D-AB1C-E5D69A1EDE03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
