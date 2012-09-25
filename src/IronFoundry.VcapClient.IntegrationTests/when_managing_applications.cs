@@ -9,43 +9,68 @@ namespace IronFoundry.VcapClient.IntegrationTests
     [TestFixture]
     public class when_managing_applications
     {
-        protected VcapClient CloudActive;
+        protected VcapClient cloudActive;
+        private const string TestAppToPush = @"\TestAppToPush";
+        private const string HttpIntegrationTestApiIronfoundryMe = "http://integration-test.api.ironfoundry.me";
         private const string TestApplicationName = "integration-test";
 
         [TestFixtureSetUp]
         public void with_known_good_cloud_target()
         {
-            CloudActive = new VcapClient(TestAccountInformation.GoodUri.ToString());
-            CloudActive.Login(
+            cloudActive = new VcapClient(TestAccountInformation.GoodUri.ToString());
+            cloudActive.Login(
                 TestAccountInformation.Username,
                 TestAccountInformation.Password);
         }
 
         [TestFixtureTearDown]
         public void cleaning_up_the_testing()
-        {        }
+        { }
 
         [Test]
         public void should_detect_known_apps()
         {
-            var apps = CloudActive.GetApplications();
+            var apps = cloudActive.GetApplications();
             apps.Should().NotBeNull();
         }
 
         [Test]
-        public void vmcshould_deploy_an_application()
+        public void should_deploy_a_sample_nodejs_application()
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            var pathToTestApp = new DirectoryInfo(currentDirectory + @"\TestAppToPush");
-          
-            CloudActive.Push(TestApplicationName, "http://integration-test.api.ironfoundry.me", 1,
+            var pathToTestApp = new DirectoryInfo(currentDirectory + TestAppToPush);
+
+            cloudActive.Push(TestApplicationName, HttpIntegrationTestApiIronfoundryMe, 1,
                 pathToTestApp, 64, null);
-
-            var testApplication = CloudActive.GetApplication(TestApplicationName);
-
+            var testApplication = cloudActive.GetApplication(TestApplicationName);
             testApplication.IsStarted.Should().BeTrue();
 
-            CloudActive.Delete(TestApplicationName);
+            cloudActive.Delete(TestApplicationName);
+        }
+
+        [Test]
+        public void should_delete_an_application()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var pathToTestApp = new DirectoryInfo(currentDirectory + TestAppToPush);
+
+            cloudActive.Push(TestApplicationName, HttpIntegrationTestApiIronfoundryMe, 1,
+                pathToTestApp, 64, null);
+            var testApplication = cloudActive.GetApplication(TestApplicationName);
+            testApplication.IsStarted.Should().BeTrue();
+
+            cloudActive.Delete(TestApplicationName);
+
+            var apps = cloudActive.GetApplications();
+            var exists = false;
+
+            foreach (var application in apps)
+            {
+                if (application.Name == TestApplicationName)
+                    exists = true;
+            }
+
+            exists.Should().BeFalse();
         }
     }
 }
