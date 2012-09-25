@@ -10,6 +10,7 @@ namespace IronFoundry.VcapClient.IntegrationTests
     public class when_managing_applications
     {
         protected VcapClient CloudActive;
+        private const string TestApplicationName = "integration-test";
 
         [TestFixtureSetUp]
         public void with_known_good_cloud_target()
@@ -23,7 +24,9 @@ namespace IronFoundry.VcapClient.IntegrationTests
         [TestFixtureTearDown]
         public void cleaning_up_the_testing()
         {
-
+            var testApplication = CloudActive.GetApplication(TestApplicationName);
+            if(testApplication != null && testApplication.IsStarted || testApplication.IsStopped)
+                CloudActive.Delete(testApplication);
         }
 
         [Test]
@@ -33,6 +36,20 @@ namespace IronFoundry.VcapClient.IntegrationTests
             apps.Should().NotBeNull();
         }
 
-   
+        [Test]
+        public void vmcshould_deploy_an_application()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var pathToTestApp = new DirectoryInfo(currentDirectory + @"\TestAppToPush");
+          
+            CloudActive.Push(TestApplicationName, "http://integration-test.api.ironfoundry.me", 1,
+                pathToTestApp, 64, null);
+
+            var testApplication = CloudActive.GetApplication(TestApplicationName);
+
+            testApplication.IsStarted.Should().BeTrue();
+
+            CloudActive.Delete(TestApplicationName);
+        }
     }
 }

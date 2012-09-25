@@ -69,7 +69,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="TestAppToPush\app.js" />
+    <Content Include="TestAppToPush\app.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
