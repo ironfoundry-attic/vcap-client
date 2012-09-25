@@ -1,4 +1,7 @@
 ﻿
+using System.IO;
+using FluentAssertions;
+
 namespace IronFoundry.VcapClient.IntegrationTests
 {
     using NUnit.Framework;
@@ -16,5 +19,20 @@ namespace IronFoundry.VcapClient.IntegrationTests
                 TestAccountInformation.Username,
                 TestAccountInformation.Password);
         }
+
+        [TestFixtureTearDown]
+        public void cleaning_up_the_testing()
+        {
+
+        }
+
+        [Test]
+        public void should_detect_known_apps()
+        {
+            var apps = CloudActive.GetApplications();
+            apps.Should().NotBeNull();
+        }
+
+   
     }
 }
