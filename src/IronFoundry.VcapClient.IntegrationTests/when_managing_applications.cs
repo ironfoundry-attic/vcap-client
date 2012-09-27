@@ -50,6 +50,16 @@ namespace IronFoundry.VcapClient.IntegrationTests
         {
             testApplication.Stop();
             testApplication.IsStopped.Should().BeTrue();
+            testApplication.IsStarted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_start_an_application_if_stopped()
+        {
+            testApplication.Stop();
+            testApplication.Start();
+            testApplication.IsStarted.Should().BeTrue();
+            testApplication.IsStopped.Should().BeFalse();
         }
     }
 }
