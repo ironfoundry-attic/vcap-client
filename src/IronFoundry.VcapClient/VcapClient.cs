@@ -11,8 +11,8 @@ namespace IronFoundry.VcapClient
     using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
-    using IronFoundry.Extensions;
-    using IronFoundry.Models;
+    using Extensions;
+    using Models;
 
     public class VcapClient : IVcapClient
     {

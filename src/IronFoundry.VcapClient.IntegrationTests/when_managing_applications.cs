@@ -1,33 +1,38 @@
-﻿
-using System.IO;
+﻿using System.IO;
 using FluentAssertions;
+using IronFoundry.Models;
+using NUnit.Framework;
 
 namespace IronFoundry.VcapClient.IntegrationTests
 {
-    using NUnit.Framework;
-
     [TestFixture]
-    public class when_managing_applications
+   public class when_managing_applications
     {
         protected VcapClient cloudActive;
-        private const string TestAppToPush = @"\TestAppToPush";
-        private const string HttpIntegrationTestApiIronfoundryMe = "http://integration-test.api.ironfoundry.me";
-        private const string TestApplicationName = "integration-test";
+        protected Application testApplication;
 
         [TestFixtureSetUp]
-        public void with_known_good_cloud_target()
+        public void with_a_standard_default_application()
         {
             cloudActive = new VcapClient(TestAccountInformation.GoodUri.ToString());
             cloudActive.Login(
                 TestAccountInformation.Username,
                 TestAccountInformation.Password);
+
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var pathToTestApp = new DirectoryInfo(currentDirectory + TestAccountInformation.TestAppToPush);
+
+            cloudActive.Push(TestAccountInformation.TestApplicationName, TestAccountInformation.HttpIntegrationTestApiIronfoundryMe, 1,
+                pathToTestApp, 64, null);
+            testApplication = cloudActive.GetApplication(TestAccountInformation.TestApplicationName);
+         
         }
 
         [TestFixtureTearDown]
         public void cleaning_up_the_testing()
         {
             var apps = cloudActive.GetApplications();
-          
+
             foreach (var application in apps)
             {
                 cloudActive.Delete(application.Name);
@@ -35,49 +40,26 @@ namespace IronFoundry.VcapClient.IntegrationTests
         }
 
         [Test]
-        public void should_detect_known_apps()
+        public void should_have_one_instance_running()
         {
-            var apps = cloudActive.GetApplications();
-            apps.Should().NotBeNull();
+            testApplication.InstanceCount.Should().Be(1);
         }
 
         [Test]
-        public void should_deploy_a_sample_nodejs_application()
+        public void should_stop_an_application_from_running()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var pathToTestApp = new DirectoryInfo(currentDirectory + TestAppToPush);
-
-            cloudActive.Push(TestApplicationName, HttpIntegrationTestApiIronfoundryMe, 1,
-                pathToTestApp, 64, null);
-            var testApplication = cloudActive.GetApplication(TestApplicationName);
-            testApplication.IsStarted.Should().BeTrue();
-
-            cloudActive.Delete(TestApplicationName);
+            testApplication.Stop();
+            testApplication.IsStopped.Should().BeTrue();
+            testApplication.IsStarted.Should().BeFalse();
         }
 
         [Test]
-        public void should_delete_an_application()
+        public void should_start_an_application_if_stopped()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var pathToTestApp = new DirectoryInfo(currentDirectory + TestAppToPush);
-
-            cloudActive.Push(TestApplicationName, HttpIntegrationTestApiIronfoundryMe, 1,
-                pathToTestApp, 64, null);
-            var testApplication = cloudActive.GetApplication(TestApplicationName);
+            testApplication.Stop();
+            testApplication.Start();
             testApplication.IsStarted.Should().BeTrue();
-
-            cloudActive.Delete(TestApplicationName);
-
-            var apps = cloudActive.GetApplications();
-            var exists = false;
-
-            foreach (var application in apps)
-            {
-                if (application.Name == TestApplicationName)
-                    exists = true;
-            }
-
-            exists.Should().BeFalse();
+            testApplication.IsStopped.Should().BeFalse();
         }
     }
 }
