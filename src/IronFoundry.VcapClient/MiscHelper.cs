@@ -42,8 +42,8 @@ namespace IronFoundry.VcapClient
 
             if (success)
             {
-                CredentialManager.SetTarget(uri);
-                CredentialManager.StoreTarget();
+                credentialManager.SetTarget(uri);
+                credentialManager.StoreTarget();
             }
             else
             {

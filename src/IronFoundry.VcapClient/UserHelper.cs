@@ -29,11 +29,11 @@ namespace IronFoundry.VcapClient
                 var response = r.Execute();
                 var parsed = JObject.Parse(response.Content);
                 var token = parsed.Value<string>("token");
-                CredentialManager.RegisterToken(token);
+                credentialManager.RegisterToken(token);
             }
             catch (VcapAuthException)
             {
-                throw new VcapAuthException(string.Format(Resources.Vmc_LoginFail_Fmt, CredentialManager.CurrentTarget));
+                throw new VcapAuthException(string.Format(Resources.Vmc_LoginFail_Fmt, credentialManager.CurrentTarget));
             }
         }
 
@@ -61,13 +61,13 @@ namespace IronFoundry.VcapClient
         {
             // TODO: doing this causes a "not logged in" failure when the user
             // doesn't exist, which is kind of misleading.
-            var appsHelper = new AppsHelper(ProxyUser, CredentialManager);
+            var appsHelper = new AppsHelper(proxyUser, credentialManager);
             foreach (Application a in appsHelper.GetApplications(email))
             {
                 appsHelper.Delete(a.Name);
             }
 
-            var servicesHelper = new ServicesHelper(ProxyUser, CredentialManager);
+            var servicesHelper = new ServicesHelper(proxyUser, credentialManager);
             foreach (ProvisionedService ps in servicesHelper.GetProvisionedServices())
             {
                 servicesHelper.DeleteService(ps.Name);
