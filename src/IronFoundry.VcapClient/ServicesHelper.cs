@@ -70,7 +70,7 @@ namespace IronFoundry.VcapClient
 
         public void BindService(string provisionedServiceName, string appName)
         {
-            var apps = new AppsHelper(ProxyUser, CredentialManager);
+            var apps = new AppsHelper(proxyUser, credentialManager);
 
             Application app = apps.GetApplication(appName);
             app.AddService(provisionedServiceName);
@@ -89,7 +89,7 @@ namespace IronFoundry.VcapClient
 
         public void UnbindService(string provisionedServiceName, string appName)
         {
-            var apps = new AppsHelper(ProxyUser, CredentialManager);
+            var apps = new AppsHelper(proxyUser, credentialManager);
             string appJson = apps.GetApplicationJson(appName);
             var appParsed = JObject.Parse(appJson);
             var services = (JArray)appParsed["services"];
@@ -99,7 +99,7 @@ namespace IronFoundry.VcapClient
             r.AddBody(appParsed);
             r.Execute();
 
-            apps = new AppsHelper(ProxyUser, CredentialManager);
+            apps = new AppsHelper(proxyUser, credentialManager);
             apps.Restart(appName);
         }
     }

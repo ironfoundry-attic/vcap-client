@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFogTestAccountInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="test_account_information.cs" />
+    <Compile Include="TestAccountInformation.cs" />
+    <Compile Include="when_deploying_applications.cs" />
     <Compile Include="when_managing_applications.cs" />
     <Compile Include="when_using_vcap_client.cs" />
   </ItemGroup>

@@ -124,9 +124,9 @@ namespace IronFoundry.VcapClient
             var currentTargetUri = uri ?? _credentialManager.CurrentTarget;
             var baseUrl = currentTargetUri.AbsoluteUri;
 
-            if (null != _credentialManager.CurrentTargetIP)
+            if (null != _credentialManager.CurrentTargetIp)
             {
-                baseUrl = String.Format("{0}://{1}", Uri.UriSchemeHttp, _credentialManager.CurrentTargetIP);
+                baseUrl = String.Format("{0}://{1}", Uri.UriSchemeHttp, _credentialManager.CurrentTargetIp);
                 RequestHostHeader = currentTargetUri.Host;
             }
 

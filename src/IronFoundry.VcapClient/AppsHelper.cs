@@ -156,7 +156,7 @@ namespace IronFoundry.VcapClient
                     {
                         foreach (string serviceName in provisionedServiceNames)
                         {
-                            var servicesHelper = new ServicesHelper(ProxyUser, CredentialManager);
+                            var servicesHelper = new ServicesHelper(proxyUser, credentialManager);
                             servicesHelper.BindService(serviceName, app.Name);
                         }
                     }
