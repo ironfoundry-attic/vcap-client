@@ -7,12 +7,12 @@
 namespace IronFoundry.VcapClient
 {
     using System.Collections.Generic;
-    using IronFoundry.Models;
+    using Models;
     using Newtonsoft.Json.Linq;
     using Properties;
     using RestSharp;
 
-    internal class UserHelper : BaseVmcHelper
+    internal class UserHelper : BaseVmcHelper, IUserHelper
     {
         public UserHelper(VcapUser proxyUser, VcapCredentialManager credentialManager)
             : base(proxyUser, credentialManager)
@@ -21,14 +21,14 @@ namespace IronFoundry.VcapClient
 
         public void Login(string email, string password)
         {
-            VcapJsonRequest r = BuildVcapJsonRequest(Method.POST, Constants.UsersResource, email, "tokens");
+            var r = BuildVcapJsonRequest(Method.POST, Constants.UsersResource, email, "tokens");
             r.AddBody(new { password });
 
             try
             {
-                IRestResponse response = r.Execute();
+                var response = r.Execute();
                 var parsed = JObject.Parse(response.Content);
-                string token = parsed.Value<string>("token");
+                var token = parsed.Value<string>("token");
                 CredentialManager.RegisterToken(token);
             }
             catch (VcapAuthException)
