@@ -1,14 +1,14 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="MiscHelper.cs" company="Tier 3">
 // Copyright © 2012 Tier 3 Inc., All Rights Reserved
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using IronFoundry.Models;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using Models;
-
     internal class MiscHelper : BaseVmcHelper
     {
         public MiscHelper(VcapUser proxyUser, VcapCredentialManager credentialManager)
@@ -32,13 +32,13 @@ namespace IronFoundry.VcapClient
             // "target" does the same thing as "info", but not logged in
             // considered valid if name, build, version and support are all non-null
             VcapRequest request = BuildVcapRequest(false, uri, Constants.InfoResource);
-            Info info = request.Execute<Info>();
+            var info = request.Execute<Info>();
 
-            var success = info != null &&
-                !info.Name.IsNullOrWhiteSpace() &&
-                !info.Build.IsNullOrWhiteSpace() &&
-                !info.Version.IsNullOrWhiteSpace() &&
-                !info.Support.IsNullOrWhiteSpace();
+            bool success = info != null &&
+                           !info.Name.IsNullOrWhiteSpace() &&
+                           !info.Build.IsNullOrWhiteSpace() &&
+                           !info.Version.IsNullOrWhiteSpace() &&
+                           !info.Support.IsNullOrWhiteSpace();
 
             if (success)
             {

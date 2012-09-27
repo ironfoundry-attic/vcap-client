@@ -4,14 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using ICSharpCode.SharpZipLib.Zip;
+
 namespace IronFoundry.VcapClient
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using ICSharpCode.SharpZipLib.Zip;
-
     public static class FrameworkDetetctor
     {
         /*
@@ -70,7 +71,7 @@ namespace IronFoundry.VcapClient
                 return Frameworks["Rack"];
             }
 
-            FileInfo firstWarFilePath = DirGlob(path, "*.war").FirstOrDefault();
+            var firstWarFilePath = DirGlob(path, "*.war").FirstOrDefault();
             if (null != firstWarFilePath && firstWarFilePath.Exists)
             {
                 return DetectFrameworkFromWar(firstWarFilePath, path);
@@ -82,15 +83,14 @@ namespace IronFoundry.VcapClient
             }
 
             var rubyFiles = DirGlob(path, "*.rb");
-            if (false == rubyFiles.IsNullOrEmpty())
+            var fileInfos = rubyFiles as List<FileInfo> ?? rubyFiles.ToList();
+            if (false == fileInfos.IsNullOrEmpty())
             {
-                foreach (var rubyFile in rubyFiles)
+                if (fileInfos.Select(
+                    rubyFile => File.ReadAllText(rubyFile.FullName)).
+                    Any(text => SinatraRegex.IsMatch(text)))
                 {
-                    string text = File.ReadAllText(rubyFile.FullName);
-                    if (SinatraRegex.IsMatch(text))
-                    {
-                        return Frameworks["Sinatra"];
-                    }
+                    return Frameworks["Sinatra"];
                 }
             }
 
@@ -124,12 +124,7 @@ namespace IronFoundry.VcapClient
                 return Frameworks["Django"];
             }
 
-            if (AppFileExists(path, "wsgi.py"))
-            {
-                return Frameworks["WSGI"];
-            }
-
-            return Frameworks["Standalone"];
+            return AppFileExists(path, "wsgi.py") ? Frameworks["WSGI"] : Frameworks["Standalone"];
         }
 
         private static DetetectedFramework DetectFrameworkFromPath(DirectoryInfo appPath)
@@ -137,27 +132,30 @@ namespace IronFoundry.VcapClient
             return DetectFrameworkFromWar(null, appPath);
         }
 
-        private static DetetectedFramework DetectFrameworkFromWar(FileInfo warFile = null, DirectoryInfo appPath = null)
+        private static DetetectedFramework DetectFrameworkFromWar(FileSystemInfo warFile = null, FileSystemInfo appPath = null)
         {
-            IEnumerable<string> contents = null;
-            if (null == warFile)
+            IEnumerable<string> contents;
+            if (null == warFile && appPath != null)
             {
                 contents = Directory.EnumerateFiles(appPath.FullName, "*", SearchOption.AllDirectories);
             }
+            else if (warFile != null)
+            {
+                    var zf = new ZipFile(warFile.FullName);
+                    var zipContents = (from ZipEntry entry in zf select entry.Name).ToList();
+                    contents = zipContents;
+            }
             else
             {
-                var zipContents = new List<string>();
-                var zf = new ZipFile(warFile.FullName);
-                foreach (ZipEntry entry in zf)
-                {
-                    zipContents.Add(entry.Name);
-                }
-                contents = zipContents;
+                // Code paths enabled a possible null null which left an exception possibility. Thus
+                // I've added this argument.  <-- Possibly re-write this. For now just placed this here.
+                throw new ArgumentNullException("Contents are null.");
             }
 
-            if (false == contents.IsNullOrEmpty())
+            var enumerable = contents as List<string> ?? contents.ToList();
+            if (false == enumerable.IsNullOrEmpty())
             {
-                foreach (string name in contents)
+                foreach (var name in enumerable)
                 {
                     if (GrailsJarRegex.IsMatch(name))
                     {
@@ -179,22 +177,22 @@ namespace IronFoundry.VcapClient
             return Frameworks["JavaWeb"];
         }
 
-        private static IEnumerable<FileInfo> DirGlob(DirectoryInfo path, string glob, bool recursive = false)
+        private static IEnumerable<FileInfo> DirGlob(FileSystemInfo path, string glob, bool recursive = false)
         {
             IEnumerable<FileInfo> rv = null;
 
             if (path.Exists)
             {
-                SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                var searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 rv = Directory.GetFiles(path.FullName, glob, searchOption).Select(f => new FileInfo(f));
             }
 
             return rv;
         }
 
-        private static bool AppFileExists(DirectoryInfo path, string relativeFilePath)
+        private static bool AppFileExists(FileSystemInfo path, string relativeFilePath)
         {
-            string pathToFile = Path.Combine(path.FullName, relativeFilePath);
+            var pathToFile = Path.Combine(path.FullName, relativeFilePath);
             return File.Exists(pathToFile);
         }
     }

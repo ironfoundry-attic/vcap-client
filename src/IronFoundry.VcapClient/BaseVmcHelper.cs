@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using IronFoundry.Models;
+using Newtonsoft.Json;
+using RestSharp;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using System.Collections.Generic;
-    using Models;
-    using Newtonsoft.Json;
-    using RestSharp;
-
     internal abstract class BaseVmcHelper
     {
         protected readonly VcapCredentialManager credentialManager;
@@ -40,28 +40,28 @@ namespace IronFoundry.VcapClient
 
         public string GetApplicationJson(string name)
         {
-            var vcapRequest = BuildVcapRequest(Constants.AppsResource, name);
+            VcapRequest vcapRequest = BuildVcapRequest(Constants.AppsResource, name);
             return vcapRequest.Execute().Content;
         }
 
         public Application GetApplication(string name)
         {
-            var json = GetApplicationJson(name);
+            string json = GetApplicationJson(name);
             return JsonConvert.DeserializeObject<Application>(json);
         }
 
         public IEnumerable<Application> GetApplications(string proxy_user = null)
         {
-            var vcapRequest = BuildVcapRequest(Constants.AppsResource);
+            VcapRequest vcapRequest = BuildVcapRequest(Constants.AppsResource);
             return vcapRequest.Execute<Application[]>();
         }
 
         protected bool AppExists(string name)
         {
-            var rv = true;
+            bool rv = true;
             try
             {
-                var appJson = GetApplicationJson(name);
+                string appJson = GetApplicationJson(name);
             }
             catch (VcapNotFoundException)
             {

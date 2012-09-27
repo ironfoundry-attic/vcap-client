@@ -4,22 +4,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using Newtonsoft.Json;
-
     public class VcapResponse : EntityBase
     {
         [JsonProperty(PropertyName = "code")]
-        public int Code
-        {
-            get; set;
-        }
+        public int Code { get; set; }
 
         [JsonProperty(PropertyName = "description")]
-        public string Description
-        {
-            get; set;
-        }
+        public string Description { get; set; }
     }
 }

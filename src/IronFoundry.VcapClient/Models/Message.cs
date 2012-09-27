@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using Newtonsoft.Json;
-
     public abstract class Message : EntityBase
     {
         public const string ReceiveOnly = "RECEIVE_ONLY";

@@ -69,7 +69,7 @@ namespace IronFoundry.VcapClient
 
         public IRestResponse Execute()
         {
-            var response = _client.Execute(request);
+            IRestResponse response = _client.Execute(request);
             ProcessResponse(response);
             ErrorMessage = response.ErrorMessage;
             return response;
@@ -77,12 +77,12 @@ namespace IronFoundry.VcapClient
 
         public TResponse Execute<TResponse>()
         {
-            var response = _client.Execute(request);
+            IRestResponse response = _client.Execute(request);
             ProcessResponse(response);
             ErrorMessage = response.ErrorMessage;
-            return response.Content.IsNullOrWhiteSpace() ? 
-                default(TResponse) : 
-                JsonConvert.DeserializeObject<TResponse>(response.Content);
+            return response.Content.IsNullOrWhiteSpace()
+                       ? default(TResponse)
+                       : JsonConvert.DeserializeObject<TResponse>(response.Content);
         }
 
         protected RestRequest BuildRequest(Method method, params object[] args)
@@ -121,8 +121,8 @@ namespace IronFoundry.VcapClient
 
         private RestClient BuildClient(bool useAuth, Uri uri = null)
         {
-            var currentTargetUri = uri ?? _credentialManager.CurrentTarget;
-            var baseUrl = currentTargetUri.AbsoluteUri;
+            Uri currentTargetUri = uri ?? _credentialManager.CurrentTarget;
+            string baseUrl = currentTargetUri.AbsoluteUri;
 
             if (null != _credentialManager.CurrentTargetIp)
             {

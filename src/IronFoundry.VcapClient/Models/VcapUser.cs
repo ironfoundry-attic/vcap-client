@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using Newtonsoft.Json;
-
     [Serializable]
     public class VcapUser
     {

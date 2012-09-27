@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using Newtonsoft.Json;
-
     public class Stats : Message
-    {        
+    {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 

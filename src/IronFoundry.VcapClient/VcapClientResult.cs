@@ -4,53 +4,48 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using IronFoundry.Models;
+
 namespace IronFoundry.VcapClient
 {
-    using Models;
-
     public class VcapClientResult
     {
-        private readonly bool success = true;
-        private readonly string message;
-        private readonly VcapResponse vcapResponse;
-        private readonly Message responseMessage;
+        private readonly string _message;
+        private readonly Message _responseMessage;
+        private readonly bool _success = true;
+        private readonly VcapResponse _vcapResponse;
 
         public VcapClientResult()
         {
-            success = true;
+            _success = true;
         }
 
         public VcapClientResult(bool argSuccess)
         {
-            success = argSuccess;
+            _success = argSuccess;
         }
 
         public VcapClientResult(bool argSuccess, string argMessage)
         {
-            success = argSuccess;
-            message = argMessage;
+            _success = argSuccess;
+            _message = argMessage;
         }
 
         public VcapClientResult(bool argSuccess, VcapResponse argResponse)
         {
-            success = argSuccess;
-            vcapResponse = argResponse;
+            _success = argSuccess;
+            _vcapResponse = argResponse;
         }
 
         public VcapClientResult(bool argSuccess, Message argResponseMessage)
         {
-            success = argSuccess;
-            responseMessage = argResponseMessage;
+            _success = argSuccess;
+            _responseMessage = argResponseMessage;
         }
 
         public bool Success
         {
-            get { return success; }
-        }
-
-        public T GetResponseMessage<T>() where T: Message
-        {
-            return (T)responseMessage;
+            get { return _success; }
         }
 
         public string Message
@@ -59,17 +54,22 @@ namespace IronFoundry.VcapClient
             {
                 string rv;
 
-                if (null == vcapResponse)
+                if (null == _vcapResponse)
                 {
-                    rv = message;
+                    rv = _message;
                 }
                 else
                 {
-                    rv = vcapResponse.Description; // TODO
+                    rv = _vcapResponse.Description; // TODO
                 }
 
                 return rv;
             }
+        }
+
+        public T GetResponseMessage<T>() where T : Message
+        {
+            return (T) _responseMessage;
         }
     }
 }

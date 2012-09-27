@@ -4,12 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace IronFoundry.Models
 {
-    using System.Collections.Generic;
-
     public class SystemServiceEqualityComparer : IEqualityComparer<SystemService>
     {
+        #region IEqualityComparer<SystemService> Members
+
         public bool Equals(SystemService c1, SystemService c2)
         {
             return c1.Vendor.Equals(c2.Vendor);
@@ -19,5 +21,7 @@ namespace IronFoundry.Models
         {
             return c.Vendor.GetHashCode();
         }
+
+        #endregion
     }
 }

@@ -1,20 +1,21 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="IVcapClient.cs" company="Tier 3">
 // Copyright © 2012 Tier 3 Inc., All Rights Reserved
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using IronFoundry.Models;
+
 namespace IronFoundry.VcapClient
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
-    using Models;
-
     public interface IVcapClient
     {
         string CurrentToken { get; }
         string CurrentUri { get; }
+        string CurrentTarget { get; }
 
         void ProxyAs(VcapUser user);
 
@@ -22,7 +23,6 @@ namespace IronFoundry.VcapClient
 
         void Target(string uri);
         void Target(string uri, IPAddress ipAddress);
-        string CurrentTarget { get; }
 
         void Login(string email, string password);
         void ChangePassword(string newPassword);
@@ -32,7 +32,7 @@ namespace IronFoundry.VcapClient
         IEnumerable<VcapUser> GetUsers();
 
         void Push(string name, string deployFQDN, ushort instances, DirectoryInfo path,
-            uint memoryMB, string[] provisionedServiceNames);
+                  uint memoryMB, string[] provisionedServiceNames);
 
         void Update(string appname, DirectoryInfo di);
 

@@ -4,18 +4,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-
     public class VcapFilesResult : VcapClientResult
     {
-        private IList<FilesResultData> files = new List<FilesResultData>();
-        private IList<FilesResultData> dirs = new List<FilesResultData>();
+        private readonly IList<FilesResultData> dirs = new List<FilesResultData>();
+        private readonly IList<FilesResultData> files = new List<FilesResultData>();
 
-        public VcapFilesResult() : base()
+        public VcapFilesResult()
         {
         }
 
@@ -41,11 +41,7 @@ namespace IronFoundry.VcapClient
         }
 
         [JsonIgnore]
-        public byte[] File
-        {
-            get;
-            private set;
-        }
+        public byte[] File { get; private set; }
 
         public IEnumerable<FilesResultData> Files
         {
@@ -67,11 +63,10 @@ namespace IronFoundry.VcapClient
             dirs.Add(new FilesResultData(dirName));
         }
 
+        #region Nested type: FilesResultData
+
         public class FilesResultData
         {
-            public string Name { get; private set; }
-            public string Size { get; private set; }
-
             public FilesResultData(string name)
             {
                 Name = name.Trim();
@@ -82,6 +77,11 @@ namespace IronFoundry.VcapClient
                 Name = name.Trim();
                 Size = size.Trim();
             }
+
+            public string Name { get; private set; }
+            public string Size { get; private set; }
         }
+
+        #endregion
     }
 }

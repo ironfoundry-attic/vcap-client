@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.VisualBasic.Devices;
+
 namespace IronFoundry
 {
-    using System.IO;
-    using Microsoft.VisualBasic.Devices;
-
     public static class Utility
     {
         public static void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
