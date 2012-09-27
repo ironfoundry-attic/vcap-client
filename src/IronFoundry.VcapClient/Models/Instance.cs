@@ -4,11 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using System.Collections.Generic;
-
     [Serializable]
     public class Instance : EntityBase
     {

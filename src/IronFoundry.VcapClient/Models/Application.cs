@@ -4,31 +4,23 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-
     [Serializable]
     public class Application : EntityBase
     {
-        private static class VcapStates
-        {
-            public const string Starting = "Starting";
-            public const string Stopped  = "STOPPED";
-            public const string Running  = "RUNNING";
-            public const string Started  = "STARTED";
-        }
-
-        private string name;
-        private Staging staging;
-        private string version;
-        private int instances;
-        private int? runningInstances;
-        private AppResources resources;
-        private string state;
-        private List<string> services = new List<string>();
+        private readonly List<string> _services = new List<string>();
+        private int _instances;
+        private string _name;
+        private AppResources _resources;
+        private int? _runningInstances;
+        private Staging _staging;
+        private string _state;
+        private string _version;
 
         public Application()
         {
@@ -39,15 +31,15 @@ namespace IronFoundry.Models
         [JsonProperty(PropertyName = "name")]
         public string Name
         {
-            get { return this.name; }
-            set { this.name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
 
         [JsonProperty(PropertyName = "staging")]
         public Staging Staging
         {
-            get { return this.staging; }
-            set { this.staging = value; }
+            get { return _staging; }
+            set { _staging = value; }
         }
 
         [JsonProperty(PropertyName = "uris")]
@@ -56,48 +48,45 @@ namespace IronFoundry.Models
         [JsonProperty(PropertyName = "instances")]
         public int InstanceCount
         {
-            get { return this.instances; }
-            set { this.instances = value; }
+            get { return _instances; }
+            set { _instances = value; }
         }
 
         [JsonProperty(PropertyName = "runningInstances")]
         public int? RunningInstances
         {
-            get { return this.runningInstances; }
-            set { this.runningInstances = value; }
+            get { return _runningInstances; }
+            set { _runningInstances = value; }
         }
 
         [JsonProperty(PropertyName = "resources")]
         public AppResources Resources
         {
-            get { return this.resources; }
-            set { this.resources = value; }
+            get { return _resources; }
+            set { _resources = value; }
         }
 
         [JsonProperty(PropertyName = "state")]
         public string State
         {
-            get { return this.state; }
-            set { this.state = value; }
+            get { return _state; }
+            set { _state = value; }
         }
 
         [JsonProperty(PropertyName = "services")]
         public string[] Services
         {
-            get
-            {
-                return services.ToArrayOrNull();
-            }
+            get { return _services.ToArrayOrNull(); }
             set
             {
                 if (value == null)
                 {
-                    services.Clear();
+                    _services.Clear();
                 }
                 else
                 {
-                    services.Clear();
-                    services.AddRange(value);
+                    _services.Clear();
+                    _services.AddRange(value);
                 }
             }
         }
@@ -105,8 +94,8 @@ namespace IronFoundry.Models
         [JsonProperty(PropertyName = "version")]
         public string Version
         {
-            get { return this.version; }
-            set { this.version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
 
         [JsonProperty(PropertyName = "env")]
@@ -133,35 +122,41 @@ namespace IronFoundry.Models
         [JsonIgnore]
         public bool CanStart
         {
-            get
-            {
-                return ! (State == VcapStates.Running || State == VcapStates.Started || State == VcapStates.Starting);
-            }
+            get { return ! (State == VcapStates.Running || State == VcapStates.Started || State == VcapStates.Starting); }
         }
 
         [JsonIgnore]
         public bool CanStop
         {
-            get
-            {
-                return State == VcapStates.Running || State == VcapStates.Started || State == VcapStates.Starting;
-            }
+            get { return State == VcapStates.Running || State == VcapStates.Started || State == VcapStates.Starting; }
         }
 
         public void Start()
         {
-            this.State = VcapStates.Started;
+            State = VcapStates.Started;
         }
 
         public void Stop()
         {
-            this.State = VcapStates.Stopped;
+            State = VcapStates.Stopped;
         }
 
         public void AddService(string provisionedServiceName)
         {
-            services.Add(provisionedServiceName);
+            _services.Add(provisionedServiceName);
         }
+
+        #region Nested type: VcapStates
+
+        private static class VcapStates
+        {
+            public const string Starting = "Starting";
+            public const string Stopped = "STOPPED";
+            public const string Running = "RUNNING";
+            public const string Started = "STARTED";
+        }
+
+        #endregion
     }
 
     [Serializable]
@@ -173,44 +168,44 @@ namespace IronFoundry.Models
         [JsonProperty(PropertyName = "model")]
         public string Model
         {
-            get { return this.model; }
-            set { this.model = value; }
+            get { return model; }
+            set { model = value; }
         }
 
         [JsonProperty(PropertyName = "stack")]
         public string Stack
         {
-            get { return this.stack; }
-            set { this.stack = value; }
+            get { return stack; }
+            set { stack = value; }
         }
     }
 
     [Serializable]
     public class AppResources : EntityBase
     {
-        private int memory;
         private int disk;
         private int fds;
+        private int memory;
 
         [JsonProperty(PropertyName = "memory")]
         public int Memory
         {
-            get { return this.memory; }
-            set { this.memory = value; }
+            get { return memory; }
+            set { memory = value; }
         }
 
         [JsonProperty(PropertyName = "disk")]
         public int Disk
         {
-            get { return this.disk; }
-            set { this.disk = value; }
+            get { return disk; }
+            set { disk = value; }
         }
 
         [JsonProperty(PropertyName = "fds")]
         public int Fds
         {
-            get { return this.fds; }
-            set { this.fds = value; }
+            get { return fds; }
+            set { fds = value; }
         }
-    }   
+    }
 }

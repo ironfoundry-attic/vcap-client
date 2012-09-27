@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using Newtonsoft.Json;
-
     [Serializable]
     public class ProvisionedService : EntityBase
-    {        
+    {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; private set; }
 
@@ -42,7 +42,7 @@ namespace IronFoundry.Models
 
         [JsonProperty(PropertyName = "tags")]
         public string[] Tags { get; set; }
-        
+
         [JsonProperty(PropertyName = "version")]
         public uint Version { get; set; }
     }

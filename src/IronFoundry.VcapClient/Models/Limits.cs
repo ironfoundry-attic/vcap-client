@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using Newtonsoft.Json;
-
     public class Limits : EntityBase
     {
         [JsonProperty(PropertyName = "mem")]

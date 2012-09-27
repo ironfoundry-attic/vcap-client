@@ -104,7 +104,7 @@ namespace IronFoundry.VcapClient
             get
             {
                 string rv = null;
-                var accessToken = GetFor(CurrentTarget);
+                AccessToken accessToken = GetFor(CurrentTarget);
                 if (null != accessToken)
                 {
                     rv = accessToken.Token;
@@ -174,8 +174,8 @@ namespace IronFoundry.VcapClient
                 var allTokens = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenJson);
                 foreach (var kvp in allTokens)
                 {
-                    var uriStr = kvp.Key;
-                    var token = kvp.Value;
+                    string uriStr = kvp.Key;
+                    string token = kvp.Value;
                     var accessToken = new AccessToken(uriStr, token);
                     _tokenDict[accessToken.Uri] = accessToken;
                 }

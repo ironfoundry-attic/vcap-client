@@ -4,23 +4,23 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using Newtonsoft.Json;
-
     public class Usage
-     {
-        [JsonProperty(PropertyName="time")]
+    {
+        [JsonProperty(PropertyName = "time")]
         public DateTime CurrentTime { get; set; }
 
-        [JsonProperty(PropertyName="cpu")]
+        [JsonProperty(PropertyName = "cpu")]
         public float CpuTime { get; set; }
 
-        [JsonProperty(PropertyName="mem")]
+        [JsonProperty(PropertyName = "mem")]
         public float MemoryUsage { get; set; }
 
-        [JsonProperty(PropertyName="disk")]
+        [JsonProperty(PropertyName = "disk")]
         public float DiskUsage { get; set; }
     }
 }

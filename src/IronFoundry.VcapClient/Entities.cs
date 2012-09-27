@@ -4,61 +4,63 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using Newtonsoft.Json;
-
     public class AppManifest
     {
-        [JsonProperty(PropertyName="name")]
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName="uris")]
+        [JsonProperty(PropertyName = "uris")]
         public string[] Uris { get; set; }
 
-        [JsonProperty(PropertyName="instances")]
+        [JsonProperty(PropertyName = "instances")]
         public ushort Instances { get; set; }
 
-        [JsonProperty(PropertyName="resources")]
+        [JsonProperty(PropertyName = "resources")]
         public AppResources Resources { get; set; }
 
-        [JsonProperty(PropertyName="staging")]
+        [JsonProperty(PropertyName = "staging")]
         public Staging Staging { get; set; }
     }
 
-    public class Staging 
+    public class Staging
     {
-        [JsonProperty(PropertyName="framework")]
+        [JsonProperty(PropertyName = "framework")]
         public string Framework { get; set; }
 
-        [JsonProperty(PropertyName="runtime")]
+        [JsonProperty(PropertyName = "runtime")]
         public string Runtime { get; set; }
     }
 
-    public class AppResources 
+    public class AppResources
     {
-        [JsonProperty(PropertyName="memory")]
+        [JsonProperty(PropertyName = "memory")]
         public uint Memory { get; set; }
     }
 
     public class Resource : IEquatable<Resource>
     {
-        [JsonProperty(PropertyName="size")]
-        public ulong Size { get; private set; }
-
-        [JsonProperty(PropertyName="sha1")]
-        public string SHA1 { get; private set; }
-
-        [JsonProperty(PropertyName="fn")]
-        public string FN { get; private set; }
-
         public Resource(ulong argSize, string argSha1, string argFN)
         {
             Size = argSize;
             SHA1 = argSha1;
-            FN   = argFN;
+            FN = argFN;
         }
+
+        [JsonProperty(PropertyName = "size")]
+        public ulong Size { get; private set; }
+
+        [JsonProperty(PropertyName = "sha1")]
+        public string SHA1 { get; private set; }
+
+        [JsonProperty(PropertyName = "fn")]
+        public string FN { get; private set; }
+
+        #region IEquatable<Resource> Members
 
         public bool Equals(Resource other)
         {
@@ -67,8 +69,10 @@ namespace IronFoundry.VcapClient
                 return false;
             }
 
-            return this.GetHashCode() == other.GetHashCode();
+            return GetHashCode() == other.GetHashCode();
         }
+
+        #endregion
 
         public override bool Equals(object obj)
         {
