@@ -4,17 +4,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using IronFoundry.Extensions;
+using IronFoundry.Models;
+using Newtonsoft.Json;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using Extensions;
-    using Models;
-    using Newtonsoft.Json;
-
     /*
      * Access token file is a dictionary of 
      {
@@ -22,26 +23,26 @@ namespace IronFoundry.VcapClient
         "http://api.vcap.me": "04085b0849221a6c756b652e62616b6b656e4074696572332e636f6d063a0645546c2b078b728b4e2219000104ec0d65746833caddd87eac48b0b2989604"}
      }
      */
-    public class VcapCredentialManager
+
+    public class VcapCredentialManager : IVcapCredentialManager
     {
         private const string TokenFile = ".vmc_token";
         private const string TargetFile = ".vmc_target";
 
-        private readonly string tokenFile;
-        private readonly string targetFile;
+        private readonly bool _shouldWrite = true;
+        private readonly string _targetFile;
 
-        private readonly bool shouldWrite = true;
+        private readonly IDictionary<Uri, AccessToken> _tokenDict = new Dictionary<Uri, AccessToken>();
+        private readonly string _tokenFile;
 
-        private readonly IDictionary<Uri, AccessToken> tokenDict = new Dictionary<Uri, AccessToken>();
+        private Uri _currentTarget;
+        private IPAddress _currentTargetIp;
 
-        private Uri currentTarget;
-        private IPAddress currentTargetIP;
-
-        public VcapCredentialManager() : this((string)null)
+        public VcapCredentialManager() : this((string) null)
         {
         }
 
-        public VcapCredentialManager(Uri currentTarget) : this((string)null)
+        public VcapCredentialManager(Uri currentTarget) : this((string) null)
         {
             if (null == currentTarget)
             {
@@ -50,24 +51,24 @@ namespace IronFoundry.VcapClient
             SetTarget(currentTarget);
         }
 
-        public VcapCredentialManager(Uri currentTarget, IPAddress currentTargetIP) : this((string)null)
+        public VcapCredentialManager(Uri currentTarget, IPAddress currentTargetIp) : this((string) null)
         {
             if (null == currentTarget)
             {
                 throw new ArgumentNullException("currentTarget");
             }
-            if (null == currentTargetIP)
+            if (null == currentTargetIp)
             {
-                throw new ArgumentNullException("currentTargetIP");
+                throw new ArgumentNullException("currentTargetIp");
             }
-            SetTarget(currentTarget, currentTargetIP);
+            SetTarget(currentTarget, currentTargetIp);
         }
 
         private VcapCredentialManager(string json)
         {
             string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            tokenFile = Path.Combine(userProfilePath, TokenFile);
-            targetFile = Path.Combine(userProfilePath, TargetFile);
+            _tokenFile = Path.Combine(userProfilePath, TokenFile);
+            _targetFile = Path.Combine(userProfilePath, TargetFile);
 
             if (json.IsNullOrWhiteSpace())
             {
@@ -78,22 +79,24 @@ namespace IronFoundry.VcapClient
                 ParseJson(json);
             }
 
-            currentTarget = ReadTargetFile();
+            _currentTarget = ReadTargetFile();
         }
 
         internal VcapCredentialManager(string tokenJson, bool shouldWrite) : this(tokenJson)
         {
-            this.shouldWrite = shouldWrite;
+            _shouldWrite = shouldWrite;
         }
+
+        #region IVcapCredentialManager Members
 
         public Uri CurrentTarget
         {
-            get { return currentTarget ?? Constants.DefaultLocalTarget; }
+            get { return _currentTarget ?? Constants.DefaultLocalTarget; }
         }
 
-        public IPAddress CurrentTargetIP
+        public IPAddress CurrentTargetIp
         {
-            get { return currentTargetIP; }
+            get { return _currentTargetIp; }
         }
 
         public string CurrentToken
@@ -101,7 +104,7 @@ namespace IronFoundry.VcapClient
             get
             {
                 string rv = null;
-                AccessToken accessToken = GetFor(CurrentTarget);
+                var accessToken = GetFor(CurrentTarget);
                 if (null != accessToken)
                 {
                     rv = accessToken.Token;
@@ -117,8 +120,8 @@ namespace IronFoundry.VcapClient
 
         public void SetTarget(Uri uri)
         {
-            currentTarget = uri;
-            currentTargetIP = null;
+            _currentTarget = uri;
+            _currentTargetIp = null;
         }
 
         public void SetTarget(Uri uri, IPAddress ip)
@@ -131,14 +134,14 @@ namespace IronFoundry.VcapClient
             {
                 throw new ArgumentNullException("ip");
             }
-            currentTarget = uri;
-            currentTargetIP = ip;
+            _currentTarget = uri;
+            _currentTargetIp = ip;
         }
 
         public void RegisterToken(string token)
         {
             var accessToken = new AccessToken(CurrentTarget, token);
-            tokenDict[accessToken.Uri] = accessToken;
+            _tokenDict[accessToken.Uri] = accessToken;
             WriteTokenFile();
         }
 
@@ -149,16 +152,18 @@ namespace IronFoundry.VcapClient
 
         public void StoreTarget()
         {
-            if (shouldWrite)
+            if (_shouldWrite)
             {
-                File.WriteAllText(targetFile, CurrentTarget.AbsoluteUriTrimmed()); // NB: trim end!
+                File.WriteAllText(_targetFile, CurrentTarget.AbsoluteUriTrimmed()); // NB: trim end!
             }
         }
+
+        #endregion
 
         private AccessToken GetFor(Uri uri)
         {
             AccessToken rv;
-            tokenDict.TryGetValue(uri, out rv);
+            _tokenDict.TryGetValue(uri, out rv);
             return rv;
         }
 
@@ -166,13 +171,13 @@ namespace IronFoundry.VcapClient
         {
             if (false == tokenJson.IsNullOrWhiteSpace())
             {
-                Dictionary<string, string> allTokens = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenJson);
-                foreach (KeyValuePair<string, string> kvp in allTokens)
+                var allTokens = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenJson);
+                foreach (var kvp in allTokens)
                 {
-                    string uriStr = kvp.Key;
-                    string token = kvp.Value;
+                    var uriStr = kvp.Key;
+                    var token = kvp.Value;
                     var accessToken = new AccessToken(uriStr, token);
-                    tokenDict[accessToken.Uri] = accessToken;
+                    _tokenDict[accessToken.Uri] = accessToken;
                 }
                 if (shouldWrite)
                 {
@@ -181,14 +186,14 @@ namespace IronFoundry.VcapClient
             }
         }
 
-        [System.Diagnostics.DebuggerStepThrough]
+        [DebuggerStepThrough]
         private string ReadTokenFile()
         {
             string rv = null;
 
             try
             {
-                rv = File.ReadAllText(tokenFile);
+                rv = File.ReadAllText(_tokenFile);
             }
             catch (FileNotFoundException)
             {
@@ -199,13 +204,14 @@ namespace IronFoundry.VcapClient
 
         private void WriteTokenFile()
         {
-            if (shouldWrite)
+            if (_shouldWrite)
             {
                 // NB: ruby vmc writes target uris without trailing slash
                 try
                 {
-                    Dictionary<string, string> tmp = tokenDict.ToDictionary(e => e.Key.AbsoluteUriTrimmed(), e => e.Value.Token);
-                    File.WriteAllText(tokenFile, JsonConvert.SerializeObject(tmp));
+                    Dictionary<string, string> tmp = _tokenDict.ToDictionary(e => e.Key.AbsoluteUriTrimmed(),
+                                                                             e => e.Value.Token);
+                    File.WriteAllText(_tokenFile, JsonConvert.SerializeObject(tmp));
                 }
                 catch (IOException)
                 {
@@ -213,14 +219,14 @@ namespace IronFoundry.VcapClient
             }
         }
 
-        [System.Diagnostics.DebuggerStepThrough]
+        [DebuggerStepThrough]
         private Uri ReadTargetFile()
         {
             Uri rv = null;
 
             try
             {
-                string contents = File.ReadAllText(targetFile);
+                string contents = File.ReadAllText(_targetFile);
                 rv = new Uri(contents);
             }
             catch (FileNotFoundException)
