@@ -4,40 +4,40 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace IronFoundry.Models
 {
-    using System;
-
     public class AccessToken
     {
-        private readonly Uri uri;
-        private string token;
+        private readonly string _token;
+        private readonly Uri _uri;
 
         public AccessToken(Uri argUri, string argToken)
         {
-            uri = argUri;
-            token = argToken;
+            _uri = argUri;
+            _token = argToken;
         }
 
         public AccessToken(string argUri, string argToken)
         {
-            uri = new Uri(argUri);
-            token = argToken;
+            _uri = new Uri(argUri);
+            _token = argToken;
         }
 
         public Uri Uri
         {
-            get { return uri; }
+            get { return _uri; }
         }
 
         public string Token
         {
-            get { return token; }
+            get { return _token; }
         }
 
         public bool HasToken
         {
-            get { return false == token.IsNullOrWhiteSpace(); }
+            get { return false == _token.IsNullOrWhiteSpace(); }
         }
     }
 }

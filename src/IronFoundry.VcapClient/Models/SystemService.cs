@@ -4,16 +4,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System;
-    using Newtonsoft.Json;
-
     [Serializable]
     public class SystemService : EntityBase
     {
         [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; } 
+        public string Type { get; set; }
 
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }

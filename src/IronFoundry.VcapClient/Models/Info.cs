@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace IronFoundry.Models
 {
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-
     public class Info : Message
     {
         [JsonProperty(PropertyName = "name")]

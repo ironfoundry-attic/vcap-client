@@ -4,15 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using IronFoundry.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
+
 namespace IronFoundry.VcapClient
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using RestSharp;
-
     internal class ServicesHelper : BaseVmcHelper
     {
         public ServicesHelper(VcapUser proxyUser, VcapCredentialManager credentialManager)
@@ -22,23 +22,25 @@ namespace IronFoundry.VcapClient
 
         public IEnumerable<SystemService> GetSystemServices()
         {
-            VcapRequest r = BuildVcapRequest(Constants.GlobalServicesResource);
-            IRestResponse response = r.Execute();
+            var vcapRequest = BuildVcapRequest(Constants.GlobalServicesResource);
+            var response = vcapRequest.Execute();
 
-            var list = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, SystemService>>>>(response.Content);
+            var list =
+                JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, SystemService>>>>
+                    (response.Content);
 
             var dataStores = from val in list.Values
-                             from val1 in val.Values
-                             from val2 in val1.Values
-                             select val2;
-            
-            return dataStores.ToList(); 
+                                                    from val1 in val.Values
+                                                    from val2 in val1.Values
+                                                    select val2;
+
+            return dataStores.ToList();
         }
 
         public IEnumerable<ProvisionedService> GetProvisionedServices()
-        {            
-            VcapRequest r = BuildVcapRequest(Constants.ServicesResource);
-            return r.Execute<ProvisionedService[]>();
+        {
+            var vcapRequest = BuildVcapRequest(Constants.ServicesResource);
+            return vcapRequest.Execute<ProvisionedService[]>();
         }
 
         public void CreateService(string serviceName, string provisionedServiceName)
@@ -49,22 +51,23 @@ namespace IronFoundry.VcapClient
             {
                 // from vmc client.rb
                 var data = new
-                {
-                    name    = provisionedServiceName,
-                    type    = service.Type,
-                    tier    = "free",
-                    vendor  = service.Vendor,
-                    version = service.Version,
-                };
-                var r = BuildVcapJsonRequest(Method.POST, Constants.ServicesResource);
-                r.AddBody(data);
-                r.Execute();
+                               {
+                                   name = provisionedServiceName,
+                                   type = service.Type,
+                                   tier = "free",
+                                   vendor = service.Vendor,
+                                   version = service.Version,
+                               };
+                var vcapJsonRequest = BuildVcapJsonRequest(Method.POST, Constants.ServicesResource);
+                vcapJsonRequest.AddBody(data);
+                vcapJsonRequest.Execute();
             }
         }
 
         public void DeleteService(string provisionedServiceName)
         {
-            var request = BuildVcapJsonRequest(Method.DELETE, Constants.ServicesResource, provisionedServiceName);
+            var request = BuildVcapJsonRequest(Method.DELETE, Constants.ServicesResource,
+                                                           provisionedServiceName);
             request.Execute();
         }
 
@@ -72,7 +75,7 @@ namespace IronFoundry.VcapClient
         {
             var apps = new AppsHelper(proxyUser, credentialManager);
 
-            Application app = apps.GetApplication(appName);
+            var app = apps.GetApplication(appName);
             app.AddService(provisionedServiceName);
 
             var request = BuildVcapJsonRequest(Method.PUT, Constants.AppsResource, app.Name);
@@ -90,14 +93,14 @@ namespace IronFoundry.VcapClient
         public void UnbindService(string provisionedServiceName, string appName)
         {
             var apps = new AppsHelper(proxyUser, credentialManager);
-            string appJson = apps.GetApplicationJson(appName);
+            var appJson = apps.GetApplicationJson(appName);
             var appParsed = JObject.Parse(appJson);
-            var services = (JArray)appParsed["services"];
-            appParsed["services"] = new JArray(services.Where(s => ((string)s) != provisionedServiceName));
+            var services = (JArray) appParsed["services"];
+            appParsed["services"] = new JArray(services.Where(s => ((string) s) != provisionedServiceName));
 
-            var r = BuildVcapJsonRequest(Method.PUT, Constants.AppsResource, appName);
-            r.AddBody(appParsed);
-            r.Execute();
+            var vcapJsonRequest = BuildVcapJsonRequest(Method.PUT, Constants.AppsResource, appName);
+            vcapJsonRequest.AddBody(appParsed);
+            vcapJsonRequest.Execute();
 
             apps = new AppsHelper(proxyUser, credentialManager);
             apps.Restart(appName);

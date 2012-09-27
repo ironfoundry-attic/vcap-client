@@ -3,17 +3,18 @@
 // Copyright © 2012 Tier 3 Inc., All Rights Reserved
 // </copyright>
 // -----------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using IronFoundry.Extensions;
+using IronFoundry.Models;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using Extensions;
-    using Models;
-
     public class VcapClient : IVcapClient
     {
         private static readonly Regex FileRe;
@@ -281,28 +282,28 @@ namespace IronFoundry.VcapClient
                         break;
                     }
                 }
-                var firstLine = Encoding.ASCII.GetString(content, 0, i);
+                string firstLine = Encoding.ASCII.GetString(content, 0, i);
                 if (FileRe.IsMatch(firstLine) || DirRe.IsMatch(firstLine))
                 {
                     // Probably looking at a listing, not a file
-                    var contentAscii = Encoding.ASCII.GetString(content);
-                    var contentAry = contentAscii.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
+                    string contentAscii = Encoding.ASCII.GetString(content);
+                    string[] contentAry = contentAscii.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
                     rv = new VcapFilesResult();
                     foreach (string item in contentAry)
                     {
-                        var fileMatch = FileRe.Match(item);
+                        Match fileMatch = FileRe.Match(item);
                         if (fileMatch.Success)
                         {
-                            var fileName = fileMatch.Groups[1].Value; // NB: 0 is the entire matched string
-                            var fileSize = fileMatch.Groups[2].Value;
+                            string fileName = fileMatch.Groups[1].Value; // NB: 0 is the entire matched string
+                            string fileSize = fileMatch.Groups[2].Value;
                             rv.AddFile(fileName, fileSize);
                             continue;
                         }
 
-                        var dirMatch = DirRe.Match(item);
+                        Match dirMatch = DirRe.Match(item);
                         if (dirMatch.Success)
                         {
-                            var dirName = dirMatch.Groups[1].Value;
+                            string dirName = dirMatch.Groups[1].Value;
                             rv.AddDirectory(dirName);
                             continue;
                         }

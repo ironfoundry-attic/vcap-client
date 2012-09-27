@@ -14,14 +14,14 @@ namespace IronFoundry.Utilities
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
-            ResolveEventHandler handler = new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            ResolveEventHandler handler = CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.AssemblyResolve += handler;
 
             Type returnedType;
             try
             {
-                AssemblyName asmName = new AssemblyName(assemblyName);
-                var assembly = Assembly.Load(asmName);
+                var asmName = new AssemblyName(assemblyName);
+                Assembly assembly = Assembly.Load(asmName);
                 returnedType = assembly.GetType(typeName);
             }
             catch

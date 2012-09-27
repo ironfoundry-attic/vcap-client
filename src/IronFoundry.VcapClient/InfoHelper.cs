@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using IronFoundry.Models;
+using Newtonsoft.Json;
+using RestSharp;
+
 namespace IronFoundry.VcapClient
 {
-    using System;
-    using System.Collections.Generic;
-    using Models;
-    using Newtonsoft.Json;
-    using RestSharp;
-
     internal class InfoHelper : BaseVmcHelper
     {
         public InfoHelper(VcapUser proxyUser, VcapCredentialManager credentialManager)
@@ -35,19 +35,22 @@ namespace IronFoundry.VcapClient
 
         public string GetStdErrLog(Application argApp, ushort argInstance)
         {
-            var r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance, "files/logs/stderr.log");
+            VcapRequest r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance,
+                                                  "files/logs/stderr.log");
             return r.Execute().Content;
         }
 
         public string GetStdOutLog(Application argApp, ushort argInstance)
         {
-            var r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance, "files/logs/stdout.log");
+            VcapRequest r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance,
+                                                  "files/logs/stdout.log");
             return r.Execute().Content;
         }
 
         public string GetStartupLog(Application argApp, ushort argInstance)
         {
-            var r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance, "files/logs/startup.log");
+            VcapRequest r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, argInstance,
+                                                  "files/logs/startup.log");
             return r.Execute().Content;
         }
 
@@ -68,7 +71,7 @@ namespace IronFoundry.VcapClient
             var tmp = JsonConvert.DeserializeObject<SortedDictionary<int, StatInfo>>(response.Content);
 
             var rv = new List<StatInfo>();
-            foreach (KeyValuePair<int, StatInfo> kvp in tmp)
+            foreach (var kvp in tmp)
             {
                 StatInfo si = kvp.Value;
                 si.ID = kvp.Key;
@@ -79,7 +82,7 @@ namespace IronFoundry.VcapClient
 
         public IEnumerable<ExternalInstance> GetInstances(Application argApp)
         {
-            var r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, "instances");
+            VcapRequest r = base.BuildVcapRequest(Constants.AppsResource, argApp.Name, "instances");
             var instances = r.Execute<Dictionary<string, ExternalInstance>>();
             return instances.Values.ToArrayOrNull();
         }

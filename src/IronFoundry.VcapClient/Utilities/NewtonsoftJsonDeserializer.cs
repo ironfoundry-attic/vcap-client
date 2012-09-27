@@ -4,15 +4,22 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Deserializers;
+
 namespace IronFoundry.Utilities
 {
-    using Newtonsoft.Json;
-    using RestSharp;
-    using RestSharp.Deserializers;
-
     public class NewtonsoftJsonDeserializer : IDeserializer
     {
-        public const string JsonContentType = "application/json"; 
+        public const string JsonContentType = "application/json";
+
+        public string ContentType
+        {
+            get { return JsonContentType; }
+        }
+
+        #region IDeserializer Members
 
         public T Deserialize<T>(IRestResponse response)
         {
@@ -25,9 +32,6 @@ namespace IronFoundry.Utilities
 
         public string RootElement { get; set; }
 
-        public string ContentType
-        {
-            get { return JsonContentType; }
-        }
+        #endregion
     }
 }
